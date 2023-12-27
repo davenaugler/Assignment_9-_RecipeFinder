@@ -1,0 +1,3 @@
+This is a test text file
+Created to ensure that this RecipeFinder application is properly working
+ADDING MORE LINES OF TEXT FOR THE SAKE OF TESTING PURPOSES
