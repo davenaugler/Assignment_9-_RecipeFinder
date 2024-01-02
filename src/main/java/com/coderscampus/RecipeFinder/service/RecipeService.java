@@ -3,8 +3,8 @@ package com.coderscampus.RecipeFinder.service;
 import com.coderscampus.RecipeFinder.domain.Recipe;
 import com.coderscampus.RecipeFinder.repo.RecipeRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.Collection;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,26 +21,24 @@ public class RecipeService {
     }
 
     public Collection<Recipe> getGlutenFreeRecipes() {
-        return recipeRepository.getAllRecipes().stream()
-                .filter(Recipe::getGlutenFree)
-                .collect(Collectors.toList());
+        return filterRecipes(Recipe::getGlutenFree);
     }
 
     public Collection<Recipe> getVeganRecipes() {
-        return recipeRepository.getAllRecipes().stream()
-                .filter(Recipe::getVegan)
-                .collect(Collectors.toList());
+        return filterRecipes(Recipe::getVegan);
     }
 
     public Collection<Recipe> getVeganAndGlutenFreeRecipes() {
-        return recipeRepository.getAllRecipes().stream()
-                .filter(recipe -> recipe.getVegan() && recipe.getGlutenFree())
-                .collect(Collectors.toList());
+        return filterRecipes(recipe -> recipe.getVegan() && recipe.getGlutenFree());
     }
 
     public Collection<Recipe> getVegetarianRecipes() {
+        return filterRecipes(Recipe::getVegetarian);
+    }
+
+    private Collection<Recipe> filterRecipes(Predicate<Recipe> predicate) {
         return recipeRepository.getAllRecipes().stream()
-                .filter(Recipe::getVegetarian)
+                .filter(predicate)
                 .collect(Collectors.toList());
     }
 }

@@ -3,8 +3,10 @@ package com.coderscampus.RecipeFinder.repo;
 import com.coderscampus.RecipeFinder.domain.Recipe;
 import com.coderscampus.RecipeFinder.service.FileService;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class RecipeRepository {
@@ -15,39 +17,28 @@ public class RecipeRepository {
     // Constructor for dependency injection
     public RecipeRepository(FileService fileService) {
         this.fileService = fileService;
+        loadRecipes();
+    }
+
+    private void loadRecipes() {
+        Map<Integer, Recipe> recipes = fileService.readRecipeFile();
+        recipeMap.putAll(recipes);
     }
 
     public Collection<Recipe> getAllRecipes() {
-        if (recipeMap.isEmpty()) {
-            Map<Integer, Recipe> recipes = fileService.readRecipeFile();
-            recipeMap.putAll(recipes);
-        }
         return recipeMap.values();
     }
 
-    // Add a new recipe
-//    public void addRecipe(Recipe recipe) {
-//        recipeMap.put(recipe.getId(), recipe);
-//    }
+    public Optional<Recipe> getRecipeById(Integer id) {
+        return Optional.ofNullable(recipeMap.get(id));
+    }
 
-    // Get a recipe by ID
-//    public Recipe getRecipeById(Integer id) {
-//        return recipeMap.get(id);
-//    }
+    public void addOrUpdateRecipe(Recipe recipe) {
+        recipeMap.put(recipe.getId(), recipe);
+    }
 
-    // Update an existing recipe
-//    public void updateRecipe(Recipe recipe) {
-//        if (recipeMap.containsKey(recipe.getId())) {
-//            recipeMap.put(recipe.getId(), recipe);
-//        } else {
-//            // Handle the case where the recipe does not exist
-//            // For example, throw an exception or log a message
-//        }
-//    }
-
-    // Delete a recipe by ID
-//    public void deleteRecipe(Integer id) {
-//        recipeMap.remove(id);
-//    }
-
+    public void deleteRecipe(Integer id) {
+        recipeMap.remove(id);
+    }
 }
+

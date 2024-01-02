@@ -61,13 +61,13 @@ public class FileService {
         recipe.setCookingMinutes(parseIntegerFromRecord(record, "Cooking Minutes"));
         recipe.setDairyFree(parseBooleanFromRecord(record, "Dairy Free"));
         recipe.setGlutenFree(parseBooleanFromRecord(record, "Gluten Free"));
-        recipe.setInstructions(record.get("Instructions")); // Assuming this is a simple String
+        recipe.setInstructions(record.get("Instructions"));
         recipe.setPreparationMinutes(parseDoubleFromRecord(record, "Preparation Minutes"));
         recipe.setPricePerServing(parseDoubleFromRecord(record, "Price Per Serving"));
         recipe.setReadyInMinutes(parseIntegerFromRecord(record, "Ready In Minutes"));
         recipe.setServings(parseIntegerFromRecord(record, "Servings"));
         recipe.setSpoonacularScore(parseDoubleFromRecord(record, "Spoonacular Score"));
-        recipe.setTitle(record.get("Title")); // Assuming this is a simple String
+        recipe.setTitle(record.get("Title"));
         recipe.setVegan(parseBooleanFromRecord(record, "Vegan"));
         recipe.setVegetarian(parseBooleanFromRecord(record, "Vegetarian"));
 

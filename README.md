@@ -9,11 +9,11 @@ This project is a Java-based application that parses a recipe.txt file and store
 - Provides RESTful endpoints to access and filter recipe data.
 
 ## Endpoints
+- /all - Returns all recipes.
 - /gluten-free - Returns recipes that are gluten-free.
 - /vegan - Returns vegan recipes.
 - /vegan-and-gluten-free - Returns recipes that are both vegan and gluten-free.
 - /vegetarian - Returns vegetarian recipes.
-- /all-recipes - Returns all recipes.
 
 ## Getting Started
 - Setup Project: Clone this repository and import it into your IDE.
