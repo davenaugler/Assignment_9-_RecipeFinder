@@ -25,7 +25,7 @@ public class FileService {
 
     public Map<Integer, Recipe> readRecipeFile() {
         Map<Integer, Recipe> recipeMap = new HashMap<>();
-        int idCounter = 1; // Start ID counter
+        int idCounter = 1;
 
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(fileName))) {
             CSVParser parser = CSVFormat.DEFAULT
