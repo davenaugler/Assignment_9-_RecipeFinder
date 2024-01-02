@@ -6,9 +6,10 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -26,31 +27,24 @@ public class FileService {
         Map<Integer, Recipe> recipeMap = new HashMap<>();
         int idCounter = 1; // Start ID counter
 
-        try (Reader in = new FileReader(fileName)) {
-            CSVFormat csvFormat = CSVFormat.Builder.create()
-                    .setHeader()
-                    .setSkipHeaderRecord(true)
-//                    .setTrim(true)
-                    .setIgnoreSurroundingSpaces(true)
-                    .setEscape('\\')
-//                    .setQuote('"')
-                    .build();
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(fileName))) {
+            CSVParser parser = CSVFormat.DEFAULT
+                    .withFirstRecordAsHeader()
+                    .withIgnoreSurroundingSpaces()
+                    .withEscape('\\')
+                    .parse(reader);
 
-            CSVParser parser = csvFormat.parse(in);
-            Iterable<CSVRecord> records = parser.getRecords();
-
-            for (CSVRecord record : records) {
+            for (CSVRecord record : parser) {
                 try {
                     Recipe recipe = parseRecipe(record);
-                    recipe.setId(idCounter); // Set the ID
-                    recipeMap.put(idCounter++, recipe); // Use the counter as the ID
+                    recipe.setId(idCounter);
+                    recipeMap.put(idCounter++, recipe);
                 } catch (IllegalArgumentException e) {
-                    System.err.println("Error parsing record: " + e.getMessage() + " Record: " + record);
+                    logger.log(Level.WARNING, "Error parsing record: {0}", e.getMessage());
                 }
             }
-
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error reading the CSV file: {0}", e.getMessage());
         }
         return recipeMap;
     }
@@ -78,7 +72,7 @@ public class FileService {
         try {
             return Integer.parseInt(record.get(fieldName));
         } catch (NumberFormatException e) {
-            logParsingError(fieldName, record.get(fieldName)); // Replace with actual logging
+            logParsingError(fieldName, record.get(fieldName));
             return 0;
         }
     }
@@ -87,7 +81,7 @@ public class FileService {
         try {
             return Double.parseDouble(record.get(fieldName));
         } catch (NumberFormatException e) {
-            logParsingError(fieldName, record.get(fieldName)); // Replace with actual logging
+            logParsingError(fieldName, record.get(fieldName));
             return 0.0;
         }
     }
