@@ -15,6 +15,18 @@ This project is a Java-based application that parses a recipe.txt file and store
 - /vegan-and-gluten-free - Returns recipes that are both vegan and gluten-free.
 - /vegetarian - Returns vegetarian recipes.
 
+## Side Notes
+This was an opportunity to further my refactoring understanding on common files we code out. I took that opportunity and applied it throughout the project. 
+
+- Recipe.java is using Lombok to reduce the clutter.
+  - @Data is generating getters, setters, `toString`, `equals`, and `hashCode` methods
+  - @NoArgsConstructor is generating a no-argument constructor 
+
+Additional methods are within `RecipeRepository.java` for future features. Thoese methods are...
+- getRecipeById()
+- addOrUpdateRecipe()
+- deleteRecipe()
+
 ## Getting Started
 - Setup Project: Clone this repository and import it into your IDE.
 - Start Spring Boot Application: Run the application to start the Spring Boot server.
